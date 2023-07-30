@@ -250,3 +250,158 @@ No exemplo abaixo foram utilizados for e while loop.
     echo "Total de comidas: " . count($comidas) . "<br>"
 ?>
 ````
+
+## Arrays associativos 
+
+Um array associativo é um array composto por key-value(chave-valor), ou seja, para cada key há um valor específico.
+
+```php
+<?php
+    $capitais = array("Japão" => "Tóquio",
+        "Coreia do Sul" => "Seoul",
+        "EUA" => "Washington D.C",
+        "India" => "Nova Delhi");
+
+    // Acessando o valor da chave individualmente
+    // echo $capitais["Japão"];
+
+    // Exibindo todos os valores chave-valor com foreach
+    foreach ($capitais as $chave => $valor) {
+        echo "País: {$chave} <br>Capital: {$valor}<br><br>";
+    }
+?>
+```
+
+Funções envolvendo arrays associativos:
+
+```php
+<?php
+    $capitais = array("Japão" => "Tóquio",
+        "Coreia do Sul" => "Seoul",
+        "EUA" => "Washington D.C",
+        "India" => "Nova Delhi");
+
+    // Acessando o valor da chave individualmente
+    // echo $capitais["Japão"];
+
+    // Remove o ultimo par(chave-valor)
+    array_pop($capitais);
+
+    // Remove o primeiro par(chave-valor)
+    array_shift($capitais);
+
+    // A função array_keys gera um novo array só de chaves.
+    $chaves = array_keys($capitais);
+
+    foreach ($chaves as $chave) {
+        echo $chave . "<br>";
+    }
+
+    echo "<br>";
+
+    // A função array_values gera um novo array só de valores.
+    $valores = array_values($capitais);
+
+    foreach ($valores as $valor) {
+        echo $valor . "<br>";
+    }
+
+    echo "<br>";
+
+    // Exibindo todos os valores chave-valor com foreach
+    foreach ($capitais as $chave => $valor) {
+        echo "País: {$chave} <br>Capital: {$valor}<br><br>";
+    }
+
+    // A função array_flip inverte a ordem de exibição do par chave-valor
+    $chave_valor_invertido = array_flip($capitais);
+
+    foreach ($chave_valor_invertido as $chave => $valor) {
+        echo "{$chave} = {$valor}<br>";
+    }
+
+    // A função array_reverse gera um novo array com os elementos invertidos
+    $capitais = array_reverse($capitais);
+    echo "<br>";
+    foreach ($capitais as $chave => $valor) {
+        echo "{$chave} = {$valor}<br>";
+    }
+
+    // A função count retorna a quantidade de pares associados(chave-valor)
+    echo "<br>Total de pares associados: " . count($capitais) . "<br>";
+?>
+```
+
+Exemplo de programa que ao passar o nome de um país como input retorna o nome da sua capital:
+
+```php
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<form action="index.php" method="POST">
+    <label for="">País:</label>
+    <input type="text" name="pais">
+    <input type="submit" value="Enviar">
+</form>
+</body>
+</html>
+
+<?php
+    $capitais = array("Japão" => "Tóquio",
+        "Coreia do Sul" => "Seoul",
+        "EUA" => "Washington D.C",
+        "India" => "Nova Delhi");
+
+    // Armazena o resultado do input com atributo pais
+    $pais = $_POST["pais"];
+    // Exibe o resultado
+    echo "Pais: {$pais}<br>" . "Capital: {$capitais["$pais"]}<br>";
+?>
+```
+
+## Funções isset() e empty()
+
+A função isset() retorna TRUE caso a variável seja declarada e não seja null.
+
+A função empty() retorna TRUE caso a variável não seja declarada, seja falsa ou null.
+
+```php
+<?php
+    $nome = "Douglas";
+    // Retorna 1(true) pois a variável está preenchida.
+    echo isset($nome);
+
+    echo "<br>";
+
+    $sobrenome = false;
+    // Retorna nada(nesse caso é falsa).
+    echo isset($sobrenome);
+    // Retorna 1(true) pois a variável é null.
+    echo empty($sobrenome);
+
+    // Analisando se a variável $nome foi setada.
+    if (isset($nome)) {
+        echo "<br>Hello, {$nome}<br>";
+    }
+    else {
+        echo "<br>A variável não está definida!<br>";
+    }
+
+    echo "<br>";
+
+    // Analisando se a variável $sobrenome é falsa, null ou não foi declarada.
+    if (empty($sobrenome)) {
+        echo "<br>A variável é null, false ou não foi preenchida!<br>";
+    }
+    else {
+        echo "<br>A variável foi preenchida!<br>";
+    }
+?>
+```
