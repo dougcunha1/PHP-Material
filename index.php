@@ -1,31 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<form action="index.php" method="POST">
+    <label for="">Username:</label>
+    <input type="text" name="username">
+    <label for="">Password:</label>
+    <input type="password" name="password">
+    <input type="submit" name="login" value="Enviar">
+</form>
+</body>
+</html>
+
+
 <?php
-    $nome = "Douglas";
-    // Retorna 1(true) pois a variável está preenchida.
-    echo isset($nome);
-
-    echo "<br>";
-
-    $sobrenome = false;
-    // Retorna nada(nesse caso é falsa).
-    echo isset($sobrenome);
-    // Retorna 1(true) pois a variável é null.
-    echo empty($sobrenome);
-
-    // Analisando se a variável $nome foi setada.
-    if (isset($nome)) {
-        echo "<br>Hello, {$nome}<br>";
-    }
-    else {
-        echo "<br>A variável não está definida!<br>";
+    // A variável global $_POST é um array associativo que contém
+    // chave-valor dos elementos do form.
+    foreach ($_POST as $chave => $valor) {
+        echo "{$chave} = {$valor}<br>";
     }
 
-    echo "<br>";
+    if (isset($_POST["login"])) {
+        $username = $_POST["username"];
+        $password = $_POST["password"];
 
-    // Analisando se a variável $sobrenome é falsa, null ou não foi declarada.
-    if (empty($sobrenome)) {
-        echo "<br>A variável é null, false ou não foi preenchida!<br>";
-    }
-    else {
-        echo "<br>A variável foi preenchida!<br>";
+        if (empty($username)) {
+            echo "Preencha o seu username!<br>";
+        }
+        elseif (empty($password)) {
+            echo "Preencha o seu password!<br>";
+        }
+        else {
+            echo "Login realizado com sucesso!<br>";
+            echo "Seja bem vindo(a), {$username}!<br>";
+        }
     }
 ?>
