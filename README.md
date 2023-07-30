@@ -540,3 +540,105 @@ Exemplo utilizando formulários:
     }
 ?>
 ```
+
+## Funções em PHP
+
+Funções são partes de códigos que podem ser reutilizadas quando necessário.
+
+```php
+<?php
+    function soma($x, $y) {
+        // Retorna a soma entre os parâmetros x e y.
+        return $x + $y;
+    }
+    
+    // Chama a função soma() e exibe o resultado.
+    echo "2 + 3 = " . soma(2, 3);
+?>
+```
+
+Exemplo de programa que analisa se um número é par ou impar:
+
+```php
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<form action="index.php" method="POST">
+    <label for="">Digite um número:</label>
+    <input type="number" name="numero">
+    <input type="submit" name="enviar" value="Enviar">
+</form>
+</body>
+</html>
+
+
+<?php
+    
+    // Verifica se um número é par, caso seja retorna true
+    function eh_par($numero) {
+        if (isset($numero)) {
+            if ($numero % 2 == 0) {
+                return true;
+            }
+            return false;
+        }
+    }
+    
+    // Recebe um valor booleano e exibe o resultado
+    function exibe_resultado($resultado) {
+        // Analisa se o valor passado está preenchido
+        if (isset($resultado)) {
+            if ($resultado == true) {
+                echo "É par!";
+            }
+            else {
+                echo "É impar!";
+            }
+        }
+        else {
+            echo "";
+        }
+
+    }
+    // Chama as funções e exibe o resultado.
+    exibe_resultado(eh_par($_POST["numero"]));
+?>
+```
+
+No exemplo acima foram utilizados duas funções, uma para calcular se um número é par ou impar e outra para exibir o resultado.
+
+## Funções de strings úteis
+
+```php
+<?php
+    // Funções de strings úteis
+    $nome = "Douglas Cunha";
+    $telefone = "123-456-7890";
+
+    // Deixa a string toda em maiúsculo.
+    echo strtoupper($nome) . "<br>";
+    // Deixa a string toda em minúsculo.
+    echo strtolower($nome) . "<br>";
+    // Retira os espaços a esquerda e direita da string.
+    echo trim("   DOUGLAS CUNHA   ") . "<br>";
+    // O primeiro parâmetro é o que queremos retirar da string
+    // O segundo parâmetro é o que queremos substituir pelo primeiro parâmetro
+    // O terceiro parâmetro é o valor a ser passado para substituição
+    echo str_replace("-", "", $telefone) . "<br>";
+    // Reverte a string
+    echo strrev($nome) . "<br>";
+    // Embaralha a string aleatoriamente
+    echo str_shuffle($nome) . "<br>";
+    // Retorna 0 caso as strings sejam iguais.
+    echo strcmp($nome, "Douglas Cunha") . "<br>";
+    // Retorna a quantidade de caracteres da string.
+    echo strlen($nome) . "<br>";
+?>
+```

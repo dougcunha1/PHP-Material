@@ -1,42 +1,24 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-<form action="index.php" method="POST">
-    <input type="checkbox" name="pizza" value="Pizza">Pizza<br>
-    <input type="checkbox" name="hamburger" value="Hamburger">Hamburger<br>
-    <input type="checkbox" name="hotdog" value="Hotdog">Hotdog<br>
-    <input type="submit" name="enviar" value="Enviar">
-</form>
-</body>
-</html>
-
 <?php
-    if (isset($_POST["enviar"])) {
-        if (isset($_POST["pizza"])) {
-            echo "Você selecionou {$_POST["pizza"]}<br>";
-        }
-        if (isset($_POST["hamburger"])) {
-            echo "Você selecionou {$_POST["hamburger"]}<br>";
-        }
-        if (isset($_POST["hotdog"])) {
-            echo "Você selecionou {$_POST["hotdog"]}<br>";
-        }
+    // Funções de strings úteis
+    $nome = "Douglas Cunha";
+    $telefone = "123-456-7890";
 
-        if (empty($_POST["pizza"])) {
-            echo "Você não gosta de Pizza?<br>";
-        }
-        if (empty($_POST["hamburger"])) {
-            echo "Você não gosta de Hamburger?<br>";
-        }
-        if (empty($_POST["hotdog"])) {
-            echo "Você não gosta de Hotdog?<br>";
-        }
-    }
+    // Deixa a string toda em maiúsculo.
+    echo strtoupper($nome) . "<br>";
+    // Deixa a string toda em minúsculo.
+    echo strtolower($nome) . "<br>";
+    // Retira os espaços a esquerda e direita da string.
+    echo trim("   DOUGLAS CUNHA   ") . "<br>";
+    // O primeiro parâmetro é o que queremos retirar da string
+    // O segundo parâmetro é o que queremos substituir pelo primeiro parâmetro
+    // O terceiro parâmetro é o valor a ser passado para substituição
+    echo str_replace("-", "", $telefone) . "<br>";
+    // Reverte a string
+    echo strrev($nome) . "<br>";
+    // Embaralha a string aleatoriamente
+    echo str_shuffle($nome) . "<br>";
+    // Retorna 0 caso as strings sejam iguais.
+    echo strcmp($nome, "Douglas Cunha") . "<br>";
+    // Retorna a quantidade de caracteres da string.
+    echo strlen($nome) . "<br>";
 ?>
