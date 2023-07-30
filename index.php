@@ -1,24 +1,40 @@
-<?php
-    // Funções de strings úteis
-    $nome = "Douglas Cunha";
-    $telefone = "123-456-7890";
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<form action="index.php" method="POST">
+    <label for="">Username:</label>
+    <input type="text" name="username">
+    <label for="">Idade:</label>
+    <input type="text" name="idade">
+    <label for="">Email:</label>
+    <input type="text" name="email">
+    <input type="submit" name="enviar" value="Enviar">
+</form>
+</body>
+</html>
 
-    // Deixa a string toda em maiúsculo.
-    echo strtoupper($nome) . "<br>";
-    // Deixa a string toda em minúsculo.
-    echo strtolower($nome) . "<br>";
-    // Retira os espaços a esquerda e direita da string.
-    echo trim("   DOUGLAS CUNHA   ") . "<br>";
-    // O primeiro parâmetro é o que queremos retirar da string
-    // O segundo parâmetro é o que queremos substituir pelo primeiro parâmetro
-    // O terceiro parâmetro é o valor a ser passado para substituição
-    echo str_replace("-", "", $telefone) . "<br>";
-    // Reverte a string
-    echo strrev($nome) . "<br>";
-    // Embaralha a string aleatoriamente
-    echo str_shuffle($nome) . "<br>";
-    // Retorna 0 caso as strings sejam iguais.
-    echo strcmp($nome, "Douglas Cunha") . "<br>";
-    // Retorna a quantidade de caracteres da string.
-    echo strlen($nome) . "<br>";
+<?php
+    // Recebe um argumento e analisa se o argumento(button) está setado.
+    function filtra_input($resultado) {
+        if (isset($resultado)) {
+            // Armazena o resultado do input username e aplica o filtro
+            $username = filter_input(INPUT_POST, "username", FILTER_SANITIZE_SPECIAL_CHARS);
+            // Armazena o resultado do input idade e aplica o filtro
+            $idade = filter_input(INPUT_POST, "idade", FILTER_SANITIZE_NUMBER_INT);
+            // Armazena o resultado do input email e aplica o filtro
+            $email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_EMAIL);
+            echo "Hello, {$username}<br>";
+            echo "You are {$idade} years old!<br>";
+            echo "Your email is: {$email}!<br>";
+        }
+    }
+    // Chama a função e exibe o resultado
+    filtra_input($_POST["enviar"]);
 ?>

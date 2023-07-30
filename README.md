@@ -642,3 +642,166 @@ No exemplo acima foram utilizados duas funções, uma para calcular se um númer
     echo strlen($nome) . "<br>";
 ?>
 ```
+
+## Utilizando algumas funções para "limpar" inputs
+
+No exemplo abaixo caso digitassemos **<script>alert("Hello, world!")</script** seria exibido um alerta no navegador, ou seja, esse input sem realizar nenhum tratamento não é seguro.
+```php
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<form action="index.php" method="POST">
+    <label for="">Username:</label>
+    <input type="text" name="username">
+    <input type="submit" name="enviar" value="Enviar">
+</form>
+</body>
+</html>
+
+<?php
+    // Recebe um argumento e analisa se o argumento(button) está setado.
+    function foi_enviado($resultado) {
+        if (isset($resultado)) {
+            // Armazena o resultado do input username
+            $username = $_POST["username"];
+            echo "Hello, {$username}";
+        }
+    }
+    // Chama a função e exibe o resultado
+    foi_enviado($_POST["enviar"]);
+?>
+```
+
+Uma forma de resolver esse problema é "limpando" o input utilizando a função **filter_input(arg1, arg2, arg3)**
+
+Os argumentos são passados da seguinte forma
+1. Uma constante pré-definida chamada FILTER_POST(caso o método seja POST) ou FILTER_GET(caso o método seja get).
+2. O nome do atributo name, nesse caso é name="username".
+3. O tipo de filtro a ser aplicado, nesse caso o filtro aplicado foi uma constante pré-definida chamada FILTER_SANITIZE_SPECIAL_CHARS
+
+```php
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<form action="index.php" method="POST">
+    <label for="">Username:</label>
+    <input type="text" name="username">
+    <input type="submit" name="enviar" value="Enviar">
+</form>
+</body>
+</html>
+
+<?php
+    // Recebe um argumento e analisa se o argumento(button) está setado.
+    function foi_enviado($resultado) {
+        if (isset($resultado)) {
+            // Armazena o resultado do input username
+            $username = filter_input(INPUT_POST, "username", FILTER_SANITIZE_SPECIAL_CHARS);
+            echo "Hello, {$username}";
+        }
+    }
+    // Chama a função e exibe o resultado
+    foi_enviado($_POST["enviar"]);
+?>
+```
+
+Dessa forma, caso tentarmos passar um código malicioso como **<script>alert("Hello, world!");</script>** o resultado será exibido na tela como uma string normal. Ou seja, nenhum código malicioso é executado
+
+O exemplo abaixo utiliza o filtro de números, ou seja, só será exibido números.
+
+```php
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<form action="index.php" method="POST">
+    <label for="">Username:</label>
+    <input type="text" name="username">
+    <label for="">Idade:</label>
+    <input type="text" name="idade">
+    <input type="submit" name="enviar" value="Enviar">
+</form>
+</body>
+</html>
+
+<?php
+    // Recebe um argumento e analisa se o argumento(button) está setado.
+    function filtra_input($resultado) {
+        if (isset($resultado)) {
+            // Armazena o resultado do input username e aplica o filtro
+            $username = filter_input(INPUT_POST, "username", FILTER_SANITIZE_SPECIAL_CHARS);
+            // Armazena o resultado do input idade e aplica o filtro
+            $idade = filter_input(INPUT_POST, "idade", FILTER_SANITIZE_NUMBER_INT);
+            echo "Hello, {$username}<br>";
+            echo "You are {$idade} years old!<br>";
+        }
+    }
+    // Chama a função e exibe o resultado
+    filtra_input($_POST["enviar"]);
+?>
+```
+
+No exemplo abaixo aplicamos o filtro em emails.
+
+```php
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<form action="index.php" method="POST">
+    <label for="">Username:</label>
+    <input type="text" name="username">
+    <label for="">Idade:</label>
+    <input type="text" name="idade">
+    <label for="">Email:</label>
+    <input type="text" name="email">
+    <input type="submit" name="enviar" value="Enviar">
+</form>
+</body>
+</html>
+
+<?php
+    // Recebe um argumento e analisa se o argumento(button) está setado.
+    function filtra_input($resultado) {
+        if (isset($resultado)) {
+            // Armazena o resultado do input username e aplica o filtro
+            $username = filter_input(INPUT_POST, "username", FILTER_SANITIZE_SPECIAL_CHARS);
+            // Armazena o resultado do input idade e aplica o filtro
+            $idade = filter_input(INPUT_POST, "idade", FILTER_SANITIZE_NUMBER_INT);
+            // Armazena o resultado do input email e aplica o filtro
+            $email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_EMAIL);
+            echo "Hello, {$username}<br>";
+            echo "You are {$idade} years old!<br>";
+            echo "Your email is: {$email}!<br>";
+        }
+    }
+    // Chama a função e exibe o resultado
+    filtra_input($_POST["enviar"]);
+?>
+```
