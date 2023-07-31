@@ -1,3 +1,9 @@
+<?php
+    // Inclui uma cópia do arquivo header.html
+    include("header.html");
+
+?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -8,45 +14,11 @@
     <title>Document</title>
 </head>
 <body>
-<form action="index.php" method="POST">
-    <label for="">Username:</label>
-    <input type="text" name="username">
-    <label for="">Idade:</label>
-    <input type="text" name="idade">
-    <label for="">Email:</label>
-    <input type="text" name="email">
-    <input type="submit" name="enviar" value="Enviar">
-</form>
+    This is the home page<br>
+    Stuff about your home page can go here<br>
 </body>
 </html>
 
 <?php
-    // Recebe um argumento e analisa se o argumento(button) está setado.
-    function filtra_input($resultado) {
-        if (isset($resultado)) {
-            // Armazena o resultado do input username e aplica o filtro
-            $username = filter_input(INPUT_POST, "username", FILTER_SANITIZE_SPECIAL_CHARS);
-            // Armazena o resultado do input idade e aplica o filtro
-            $idade = filter_input(INPUT_POST, "idade", FILTER_SANITIZE_NUMBER_INT);
-            // Armazena o resultado do input email e aplica o filtro
-            $email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_EMAIL);
-
-            // Analisa para ver se o valor digitado é válido.
-            if (empty($idade = filter_input(INPUT_POST, "idade", FILTER_VALIDATE_INT))) {
-                echo "A idade digitada é inválida!";
-            }
-            // Analisa se o email digitado é inválido
-            if (empty($email = filter_input(INPUT_POST, "email", FILTER_VALIDATE_EMAIL))) {
-                echo "O email digitado é inválido!";
-            }
-            else {
-                echo "Hello, {$username}<br>";
-                echo "You are {$idade} years old!<br>";
-                echo "Your email is: {$email}!<br>";
-            }
-
-        }
-    }
-    // Chama a função e exibe o resultado
-    filtra_input($_POST["enviar"]);
+    include("footer.html");
 ?>

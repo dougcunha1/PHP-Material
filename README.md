@@ -864,3 +864,97 @@ Podemos validar campos de input utilizando a função filter_input(arg1, arg2, a
     filtra_input($_POST["enviar"]);
 ?>
 ```
+
+## A função include em PHP
+
+A função include() tem por objetivo copiar o conteúdo de um arquivo **ex: php, html, text, etc...** e incluir ele em seu arquivo php.
+
+Exemplo de programa que possui 3 hyperlinks:
+
+```php
+<?php
+    // Inclui uma cópia do arquivo header.html
+    include("header.html");
+
+?>
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    This is the home page<br>
+    Stuff about your home page can go here<br>
+</body>
+</html>
+
+<?php
+    include("footer.html");
+?>
+```
+
+```php
+<?php
+    include("header.html");
+?>
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    This is the Locations page<br>
+    Stuff about your Locations page can go here<br>
+</body>
+</html>
+
+<?php
+    include("footer.html");
+?>
+```
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <header>
+        <h2>Esse é o meu site!</h2>
+        <a href="index.php">Home</a>
+        <a href="about.php">About</a>
+        <a href="locations.php">Locations</a>
+        <hr>
+    </header>
+</body>
+</html>
+```
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <footer>
+        <hr>
+        Author: Douglas Cunha
+        <a href="mailto:contact.dougcunha@gmail.com">contact.dougcunha@gmail.com</a>
+    </footer>
+</body>
+</html>
+```
