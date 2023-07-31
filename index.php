@@ -30,9 +30,21 @@
             $idade = filter_input(INPUT_POST, "idade", FILTER_SANITIZE_NUMBER_INT);
             // Armazena o resultado do input email e aplica o filtro
             $email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_EMAIL);
-            echo "Hello, {$username}<br>";
-            echo "You are {$idade} years old!<br>";
-            echo "Your email is: {$email}!<br>";
+
+            // Analisa para ver se o valor digitado é válido.
+            if (empty($idade = filter_input(INPUT_POST, "idade", FILTER_VALIDATE_INT))) {
+                echo "A idade digitada é inválida!";
+            }
+            // Analisa se o email digitado é inválido
+            if (empty($email = filter_input(INPUT_POST, "email", FILTER_VALIDATE_EMAIL))) {
+                echo "O email digitado é inválido!";
+            }
+            else {
+                echo "Hello, {$username}<br>";
+                echo "You are {$idade} years old!<br>";
+                echo "Your email is: {$email}!<br>";
+            }
+
         }
     }
     // Chama a função e exibe o resultado

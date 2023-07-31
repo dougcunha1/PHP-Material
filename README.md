@@ -805,3 +805,62 @@ No exemplo abaixo aplicamos o filtro em emails.
     filtra_input($_POST["enviar"]);
 ?>
 ```
+
+## Validando Campos de Input
+
+Podemos validar campos de input utilizando a função filter_input(arg1, arg2, arg3) onde arg3 podendo ser as constantes **FILTER_VALIDATE_INT, FILTER_VALIDATE_EMAIL, etc...**
+
+```php
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<form action="index.php" method="POST">
+    <label for="">Username:</label>
+    <input type="text" name="username">
+    <label for="">Idade:</label>
+    <input type="text" name="idade">
+    <label for="">Email:</label>
+    <input type="text" name="email">
+    <input type="submit" name="enviar" value="Enviar">
+</form>
+</body>
+</html>
+
+<?php
+    // Recebe um argumento e analisa se o argumento(button) está setado.
+    function filtra_input($resultado) {
+        if (isset($resultado)) {
+            // Armazena o resultado do input username e aplica o filtro
+            $username = filter_input(INPUT_POST, "username", FILTER_SANITIZE_SPECIAL_CHARS);
+            // Armazena o resultado do input idade e aplica o filtro
+            $idade = filter_input(INPUT_POST, "idade", FILTER_SANITIZE_NUMBER_INT);
+            // Armazena o resultado do input email e aplica o filtro
+            $email = filter_input(INPUT_POST, "email", FILTER_SANITIZE_EMAIL);
+
+            // Analisa para ver se o valor digitado é válido.
+            if (empty($idade = filter_input(INPUT_POST, "idade", FILTER_VALIDATE_INT))) {
+                echo "A idade digitada é inválida!";
+            }
+            // Analisa se o email digitado é inválido
+            if (empty($email = filter_input(INPUT_POST, "email", FILTER_VALIDATE_EMAIL))) {
+                echo "O email digitado é inválido!";
+            }
+            else {
+                echo "Hello, {$username}<br>";
+                echo "You are {$idade} years old!<br>";
+                echo "Your email is: {$email}!<br>";
+            }
+
+        }
+    }
+    // Chama a função e exibe o resultado
+    filtra_input($_POST["enviar"]);
+?>
+```
