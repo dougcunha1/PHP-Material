@@ -1,7 +1,3 @@
-<?php
-    session_start();
-?>
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -12,31 +8,21 @@
     <title>Document</title>
 </head>
 <body>
-    This is de login page<br>
-    <a href="home.php">This goes to home page</a><br>
-
-    <form action="index.php" method="POST">
-        <label for="">Username:</label>
-        <input type="text" name="username">
-        <label for="">Password:</label>
-        <input type="password" name="password">
-        <input type="submit" name="login" value="Login">
-    </form>
+<form action="<?php htmlspecialchars($_SERVER["PHP_SELF"])?>" method="POST">
+    <label for="">Username:</label>
+    <input type="text" name="username">
+    <input type="submit" value="Submit" name="submit">
+</form>
 </body>
 </html>
 
 <?php
-    if (isset($_POST["login"])) {
-        // Caso o username e senha não estejam vazios, é criado uma session
-        if (!empty($_POST["username"] && !empty($_POST["password"]))) {
-            // Não aplicamos nenhum filtro, é apenas um exemplo
-            $_SESSION["username"] = $_POST["username"];
-            $_SESSION["password"] = $_POST["password"];
-            // Redireciona para a página home.php
-            header("Location: home.php");
-        }
-        else {
-            echo "Missing username/password<br>";
-        }
+    foreach ($_SERVER as $key => $value) {
+        echo "Key: {$key}<br>Value: {$value}<br>";
+    }
+
+    // Analisas se o método de requisição é igual a POST
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        echo "Hello!";
     }
 ?>

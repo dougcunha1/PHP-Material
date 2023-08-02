@@ -1142,3 +1142,37 @@ Exemplo de login/logout de usuário utilizando session
 ```
 
 ## Server em PHP
+
+A variável global $_SERVER contémm headers(cabeçalhos), paths(caminhos) e script de localizações. As entradas no array são criados pelo navegador. Praticamente exibem tudo que precisamos saber sobre a o ambiente da página web no navegador.
+
+```php
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<form action="<?php htmlspecialchars($_SERVER["PHP_SELF"])?>" method="POST">
+    <label for="">Username:</label>
+    <input type="text" name="username">
+    <input type="submit" value="Submit" name="submit">
+</form>
+</body>
+</html>
+
+<?php
+    // Exibe o resultado dos valores key-value
+    foreach ($_SERVER as $key => $value) {
+        echo "Key: {$key}<br>Value: {$value}<br>";
+    }
+
+    // Analisas se o método de requisição é igual a POST
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        echo "Hello!";
+    }
+?>
+```
