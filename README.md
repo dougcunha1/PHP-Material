@@ -998,3 +998,147 @@ Na foto abaixo é mostrado o cookie salvo com os valores passados para a funçã
 }
 ?>
 ```
+
+## Session em PHP
+
+Session é uma variável global utilizada para armazenar informações de um usuário em múltiplas páginas. Cada usuário é atribuido uma session-id, um bom exemplo seria as credenciais.
+
+```php
+<?php
+    session_start();
+?>
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    This is de login page<br>
+    <a href="home.php">This goes to home page</a><br>
+</body>
+</html>
+
+<?php
+    // Armazena os valores(key-value)
+    $_SESSION["username"] = "doug";
+    $_SESSION["password"] = "123";
+?>
+```
+
+```php
+<?php
+    // Iniciando a sessão
+    session_start();
+?>
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    This is the home page<br>
+    <a href="index.php">This goes to the login page</a><br>
+</body>
+</html>
+
+<?php
+    // Exibe o resultado de cada key presente no arquivo index.php
+    echo $_SESSION["username"] . "<br>";
+    echo $_SESSION["password"] . "<br>";
+?>
+```
+
+Exemplo de login/logout de usuário utilizando session
+
+```php
+<?php
+    session_start();
+?>
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    This is de login page<br>
+    <a href="home.php">This goes to home page</a><br>
+
+    <form action="index.php" method="POST">
+        <label for="">Username:</label>
+        <input type="text" name="username">
+        <label for="">Password:</label>
+        <input type="password" name="password">
+        <input type="submit" name="login" value="Login">
+    </form>
+</body>
+</html>
+
+<?php
+    if (isset($_POST["login"])) {
+        // Caso o username e senha não estejam vazios, é criado uma session
+        if (!empty($_POST["username"] && !empty($_POST["password"]))) {
+            // Não aplicamos nenhum filtro, é apenas um exemplo
+            $_SESSION["username"] = $_POST["username"];
+            $_SESSION["password"] = $_POST["password"];
+            // Redireciona para a página home.php
+            header("Location: home.php");
+        }
+        else {
+            echo "Missing username/password<br>";
+        }
+    }
+?>
+```
+
+```php
+<?php
+    // Iniciando a sessão
+    session_start();
+?>
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    This is the home page<br>
+    <form action="home.php" method="POST">
+        <input type="submit" name="logout" value="Logout">
+    </form>
+</body>
+</html>
+
+<?php
+    // Exibe o resultado de cada key presente no arquivo index.php
+    echo $_SESSION["username"] . "<br>";
+    echo $_SESSION["password"] . "<br>";
+
+    // Caso o usuário clique no botão logout a session é destruida
+    if (isset($_POST["logout"])) {
+        session_destroy();
+        header("Location: index.php");
+    }
+?>
+```
+
+## Server em PHP
