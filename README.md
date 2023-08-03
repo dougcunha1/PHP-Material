@@ -1199,3 +1199,51 @@ Hashing é uma forma de "esconder" dados sensíveis.
     }
 ?>
 ```
+
+## Conectando ao banco de dados MySQL
+
+Há duas formas populares de se conectar ao MySQL, uma delas é utilizando a extensão MySQLi e a outra é utilizando a extensão PDO(envolve POO)
+
+## Utilizando a extensão MYSQLi
+
+Criando uma conexão em um arquivo sepadado chamado database.php
+
+```php
+<?php
+    $db_server = "localhost";
+    $db_user = "root";
+    $db_password = "";
+    $db_name = "businessdb";
+    $conn = "";
+
+    try {
+        // A função mysqli_connect recebe quatro argumentos
+        $conn = mysqli_connect($db_server, $db_user, $db_password, $db_name);
+    }
+    catch (mysqli_sql_exception) {
+        echo "Could not connect!<br>";
+    }
+?>
+```
+
+Acessando o resultado dessa conexão no arquivo index.php utilizando a função include()
+
+```php
+<?php
+    include("database.php");
+?>
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    Hello<br>
+</body>
+</html>
+```
