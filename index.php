@@ -1,24 +1,24 @@
 <?php
     include("database.php");
 
-    // Duas variáveis quaisquer
-    $username = "Douglas";
-    $password = "universe123";
-    // Aplicando uma hash na senha utilizando o algoritmo bcrypt
-    $hash = password_hash($password, PASSWORD_DEFAULT);
+    $sql = "SELECT * FROM users";
+    // Result é basicamente um "objeto"
+    $result = mysqli_query($conn, $sql);
 
-    // Query simplse que seleciona a tabela users e insere dados
-    $sql = "INSERT INTO users(user, password) VALUES('$username', '$hash')";
+    // A função mysqli_num_rows calcula a quantidade de linhas existentes no db
+    if (mysqli_num_rows($result) > 0) {
+        // A função mysqli_fetch_assoc retorna a próxima linha disponível
+        while($row = mysqli_fetch_assoc($result)) {
+            echo $row["id"] . "<br>";
+            echo $row["user"] . "<br>";
+            echo $row["reg_date"] . "<br>";
+            echo "<br>";
+        }
 
-    try {
-        // A função mysqli_query recebe dois parâmetros, uma conexão com o db e uma query
-        mysqli_query($conn, $sql);
-        echo "User is now registered!";
     }
-    catch (mysqli_sql_exception) {
-        echo "Could not register user!";
+    else {
+        echo "No user found!";
     }
 
-    // Fecha a conexão com o banco de dados
     mysqli_close($conn);
 ?>
