@@ -1247,3 +1247,53 @@ Acessando o resultado dessa conexão no arquivo index.php utilizando a função 
 </body>
 </html>
 ```
+
+## Inserindo alguns dados no nosso banco de dados utilizando PHP e MySQL
+
+Arquivo database.php
+```php
+<?php
+    $db_server = "localhost";
+    $db_user = "root";
+    $db_password = "";
+    $db_name = "businessdb";
+    $conn = "";
+
+    try {
+        // A função mysqli_connect recebe quatro argumentos
+        $conn = mysqli_connect($db_server, $db_user, $db_password,$db_name);
+    }
+    catch (mysqli_sql_exception) {
+        echo "Could not connect!<br>";
+    }
+?>
+```
+
+Arquivo index.php
+
+```php
+<?php
+    include("database.php");
+
+    // Duas variáveis quaisquer
+    $username = "Douglas";
+    $password = "universe123";
+    // Aplicando uma hash na senha utilizando o algoritmo bcrypt
+    $hash = password_hash($password, PASSWORD_DEFAULT);
+
+    // Query simplse que seleciona a tabela users e insere dados
+    $sql = "INSERT INTO users(user, password) VALUES('$username', '$hash')";
+
+    try {
+        // A função mysqli_query recebe dois parâmetros, uma conexão com o db e uma query
+        mysqli_query($conn, $sql);
+        echo "User is now registered!";
+    }
+    catch (mysqli_sql_exception) {
+        echo "Could not register user!";
+    }
+
+    // Fecha a conexão com o banco de dados
+    mysqli_close($conn);
+?>
+```
