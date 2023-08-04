@@ -929,13 +929,13 @@ Exemplo de programa que possui 3 hyperlinks:
     <title>Title</title>
 </head>
 <body>
-    <header>
-        <h2>Esse é o meu site!</h2>
-        <a href="index.php">Home</a>
-        <a href="about.php">About</a>
-        <a href="locations.php">Locations</a>
-        <hr>
-    </header>
+<header>
+    <h2>Esse é o meu site!</h2>
+    <a href="arquivos/index.php">Home</a>
+    <a href="arquivos/about.php">About</a>
+    <a href="arquivos/locations.php">Locations</a>
+    <hr>
+</header>
 </body>
 </html>
 ```
