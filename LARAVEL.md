@@ -169,6 +169,113 @@ Para se livrar do problema envolvendo **CSRF** basta ir no nosso arquivo **home.
 
 ## Trabalhando com Controllers
 
+No arquivo **web.php** que lida com os **Routes** foi criando um novo roteamento e passado uma função anônima para o route, mas o comum é criamos uma lógica que irá lidar com esse redirecionamento quando a URL for acessada, nesse caso iremos fazer uso de controllers! Ou seja, podemos ter um **UserController, PostController, etc...**. Dessa forma, "dividimos a funcionalidade por assim dizer".
+
+Os Controllers estão no diretório **app/Http/Controllers/Controller.php**.
+
+Para criar um controller, podemos utilizar o artisan, vejamos:
+
+```php
+php artisan make:controller UserController
+```
+
+No exemplo acima passamos o argumento **make:controller** que basicamente cria automaticamente um controller para nós, por fim informamos o nome desse controller, nesse caso será **UserController.php**
+
+O arquivo criado conterá o seguinte código:
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+class UserController extends Controller
+{
+    // Nosso código vai aqui
+}
+```
+
+Anteriormente utilizamos uma função anônima no nosso route para que seja exibido uma mensagem quando o usuário acessar a url /register, nesse caso iremos substituir essa função anônima pelo método criado abaixo, vejamos:
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+class UserController extends Controller
+{
+    // Retorna a string abaixo
+    public function register() {
+        return "Hello from our controller!";
+    }
+}
+```
+
+Note que criamos um método chamado register(), utilizando ele no nosso arquivo **web.php** temos:
+
+```php
+<?php
+
+// Importa a classe UserController e as suas funcionalidades
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Route;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "web" middleware group. Make something great!
+|
+*/
+
+Route::get('/', function () {
+    return view('home');
+});
+
+// Primeiro parâmetro = o URL e segundo é uma função que é executada
+// sempre que o URL é acessado.
+Route::post('/register', [UserController::class, 'register']);
+
+```
+
+Note que passamos um array contendo dois valores no nosso Route, nesse caso o primeiro valor é a **nossa classe UserController** e o segundo valor é o **nosso método register()**. Por fim devemos **importar a classe UserController.**
+
+Mas e se quisermos ter acesso aos dados digitados no campo? Bem, para isso podemos utilizar a **classe Request como parâmetro no método register()**, vejamos:
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+class UserController extends Controller
+{
+    // Retorna a string abaixo
+    public function register(Request $request) {
+        // Utilizamos a função valide() passando como argumento um array contendo os atributos do form.
+        // Caso o campo abaixo não seja validado, o usuário não será redirecionado para o /register.
+        $incomingFields = $request->validate([
+            // name possui tamanho mínimo de 3 caracteres e máximo de 10
+            'name' => ['required', 'min:3', 'max:10'],
+            'email' => ['required', 'email'],
+            // name possui tamanho mínimo de 8 caracteres e máximo de 24
+            'password' => ['required', 'min:8', 'max:24']
+        ]);
+        return "Hello from our controller!";
+    }
+}
+```
+
+No exemplo acima utilizamos a função valide() juntamente com um array associativo, a função validate irá validar os dados digitados pelo usuário. Note que utilizamos atributos como min:3, required etc. O usuário só será redirecionado para a url /register caso os dados sejam passados pela função valide(). Caso contŕario o usuário será "jogado" novamente para a parte de registro.
+
+## 
 
 
 [Voltar](README.md)
