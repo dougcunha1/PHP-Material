@@ -275,7 +275,78 @@ class UserController extends Controller
 
 No exemplo acima utilizamos a função valide() juntamente com um array associativo, a função validate irá validar os dados digitados pelo usuário. Note que utilizamos atributos como min:3, required etc. O usuário só será redirecionado para a url /register caso os dados sejam passados pela função valide(). Caso contŕario o usuário será "jogado" novamente para a parte de registro.
 
-## 
+## Trabalhando com Banco de Dados MySQL
+
+A partir de agora iremos conectar o nosso banco de dados MySQL com a nossa aplicação, dessa forma poderemos armazenar o registro do usuário no nosso banco de dados. Antes disso, é necessário criar um banco de dados, o banco que foi criado se chama **demoproject**. Para conectar o banco de dados com a aplicação basta abrir o arquivo **.env** e passar o nome do banco de dados criado, o user e a senha.
+
+Beleza, criamos o banco de dados, mas e a(s) tabela(s), como ficam? Simples, o laravel dispõe a criação de tabelas padronizadas para o nosso uso, para isso basta utilizar o comando abaixo:
+
+```php
+php artisan migrate
+```
+
+O comando acima irá criar tableas padronizadas para o nosso uso em nosso banco de dados chamado demoproject.
+
+As tabelas criadas são as descritas abaixo:
+
+![](imagens/phpartisanmigrate.png)
+
+A tabela que iremos trabalhar no momento será a tabela users. A tabela user possui as seguintes características:
+
+![](imagens/users.png)
+
+
+## Utilizando um Model
+
+Um model é basicamente uma forma de **abstração** que nos permite executar certas lógicas envolvendo a nossa aplicação. Dessa forma, o nosso Model fica responsável por encapsular a complexidade e detalhes internos da nossa aplicação. Podemos ter Model's para User, Post, BlogPost, BlogPostComments etc...
+
+Em resumo, um Model é uma forma de mapearmos a relação entre estruturas de dados e relações envolvendo um ou mais dados.
+
+O model que iremos utilizar se chama **User.php**, ele atualmente já está criado por padrão.
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+// Importa o model User
+use App\Models\User;
+use Illuminate\Http\Request;
+
+class UserController extends Controller
+{
+    // Retorna a string abaixo
+    public function register(Request $request) {
+        // Utilizamos a função valide() passando como argumento um array contendo os atributos do form.
+        // Caso o campo abaixo não seja validado, o usuário não será redirecionado para o /register.
+        $incomingFields = $request->validate([
+            // name possui tamanho mínimo de 3 caracteres e máximo de 10
+            'name' => ['required', 'min:3', 'max:10'],
+            'email' => ['required', 'email'],
+            // name possui tamanho mínimo de 8 caracteres e máximo de 24
+            'password' => ['required', 'min:8', 'max:24']
+        ]);
+
+        // Utilizamos uma hash com o algoritmo bcrypt antes de enviarmos para o DB.
+        $incomingFields['password'] = bcrypt($incomingFields['password']);
+        User::create($incomingFields);
+
+        return "Hello from our controller!";
+    }
+}
+```
+
+No exemplo acima, note que utilizamos um algoritmo de hash chamado bcrypt para não deixar a senha do usuário sujeita a possível acesso caso a nossa aplicação venha a ser violada, após isso, utilizamos o nosso model **User** seguido de um método chamado **create($incomingFields)** que recebe os dados do formulário.
+
+Por fim, ao preenchermos os campos de registro e enviarmos para o servidor temos que os dados serão armazenados no banco de dados e o usuário será registrado com sucesso.
+
+O resultado é o exibido abaixo:
+
+![](imagens/data_fromDB.png)
+
+## Trabalhando com o conceito de Log in e Log out
+
+O conceito de Log in e Log out envolve conceitos como session e cookies que já foram vistos anteriormente no estudo do [PHP Básico](PHP_BASICO.md). Mas para maiores detalhes, [esse tutorial](https://www.youtube.com/watch?v=uXDnS5PcjCA) apresenta um conteúdo bem completo e aprofundado sobre esses conceitos.
 
 
 [Voltar](README.md)
