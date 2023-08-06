@@ -65,6 +65,8 @@ O comando acima vai abrir um servidor local com o url e a porta por padrão.
 INFO  Server running on [http://127.0.0.1:8000].  
 ```
 
+## Introdução aos diretório do projeto e a blade template engine
+
 No diretório **resources/views/welcome.blade.php** é armazenado a página inicial quando rodamos o artisan serve, nesse caso o laravel faz uso do template engine Blade. 
 
 Já o diretório **routes/web.php** é onde fica os nossos routes, ou seja, o lugar onde armazena o roteamento das páginas quando tentamos acessar determinado URL.
