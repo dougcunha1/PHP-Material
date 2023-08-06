@@ -349,4 +349,202 @@ O resultado é o exibido abaixo:
 O conceito de Log in e Log out envolve conceitos como session e cookies que já foram vistos anteriormente no estudo do [PHP Básico](PHP_BASICO.md). Mas para maiores detalhes, [esse tutorial](https://www.youtube.com/watch?v=uXDnS5PcjCA) apresenta um conteúdo bem completo e aprofundado sobre esses conceitos.
 
 
+Modificando o arquivo **UserController.php** temos o seguinte:
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+
+class UserController extends Controller
+{
+    // Retorna a string abaixo
+    public function register(Request $request) {
+        // Utilizamos a função valide() passando como argumento um array contendo os atributos do form.
+        // Caso o campo abaixo não seja validado, o usuário não será redirecionado para o /register.
+        $incomingFields = $request->validate([
+            // name possui tamanho mínimo de 3 caracteres e máximo de 10
+            // Aplicamos uma regra onde o username tem que ser único passando o nome da tabela
+            // e o nome do campo html.
+            'name' => ['required', 'min:3', 'max:10', Rule::unique('users', 'name')],
+            // Aplicamos a regra do email ser único na tabela users.
+            'email' => ['required', 'email', Rule::unique('users', 'email')],
+            // name possui tamanho mínimo de 8 caracteres e máximo de 24
+            'password' => ['required', 'min:8', 'max:24']
+        ]);
+
+        // Utilizamos uma hash com o algoritmo bcrypt antes de enviarmos para o DB.
+        $incomingFields['password'] = bcrypt($incomingFields['password']);
+        // Armazena o resultado retornado pelo model User
+        $user = User::create($incomingFields);
+        // A função auth() é uma função a nível global que lida com a disponibilidade da instância de autorização
+        // O método login é responsável por "logar" o usuário na aplicação
+        auth()->login($user);
+
+        // Redireciona o usuário para a home page.
+        return redirect('/');
+    }
+}
+```
+
+Foram adicionados as funcionalidades de campo unico, onde importamos a classe **Rule** e chamamos o método **unique(db_table, field_name)** passando o nome da tabela e o nome do campo HTML. Dessa forma antes de registar o usuário, o sistema irá analisar se aqueles valores já não existem no banco de dados. Em seguida, utilizamos a **função global auth()** e o **método login()** que é responsável por logar o usuário na aplicação. Por fim, utilizamos a **função redirect()** que irá redirecionar o usuário logado para a **home page.**
+
+Alterando o nosso arquivo **home.blade.php** para exibir os dados caso o usuário esteja logado. Para isso iremos utilizar algumas funcionalidades como **@auth, @else e @endauth**. Dessa forma, caso o usuário esteja logado será exibido os respectivos dados, caso não esteja será exibido outros dados e funcionalidades, veremos com mais detalhe nos pŕoximos exemplos.
+
+```php
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Home</title>
+</head>
+<body>
+    <!-- Basicamente estamos trabalhando com session e cookies. -->
+    @auth
+        <p>Congrats you are logged in.</p>
+        <form action="/logout" method="POST">
+            @csrf
+            <button>Log out</button>
+        </form>
+    <!-- Caso o usuário não esteja logado será exibido a funcionalidade de registro. -->
+    @else
+        <div style="border: 3px solid black;">
+            <h2>Register</h2>
+            <form action="/register" method="POST">
+                <!-- Resolve CSRF problem. -->
+                @csrf
+                <label>Username:</label>
+                <input type="text" name="name">
+                <label>Email:</label>
+                <input type="text" name="email">
+                <label>Password:</label>
+                <input type="password" name="password">
+                <button>Register</button>
+            </form>
+        </div>
+        <!-- Formulário de login da aplicação -->
+        <div style="border: 3px solid black;">
+            <h2>Login</h2>
+            <form action="/login" method="POST">
+                <!-- Resolve CSRF problem. -->
+                @csrf
+                <label>Username:</label>
+                <input type="text" name="login-name">
+                <label>Password:</label>
+                <input type="password" name="login-password">
+                <button>Log in</button>
+            </form>
+        </div>
+    @endauth
+</body>
+</html>
+```
+
+No exemplo acima foram adicionados as sessões de register e login caso o usuário não esteja logado no sistema. Em seguida, temos as seguintes funcionalidades implementadas no arquivo **UserController.php** que é responsável pela comunicação lógica entre a aplicação(view) e o banco de dados, vejamos:
+
+```php
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+
+class UserController extends Controller
+{
+    // Valida os campos de input, aplica hash no password, armazena os campos no DB e redireciona o usuário
+    public function register(Request $request) {
+        // Utilizamos a função valide() passando como argumento um array contendo os atributos do form.
+        // Caso o campo abaixo não seja validado, o usuário não será redirecionado para o /register.
+        $incomingFields = $request->validate([
+            // name possui tamanho mínimo de 3 caracteres e máximo de 10
+            // Aplicamos uma regra onde o username tem que ser único passando o nome da tabela
+            // e o nome do campo html.
+            'name' => ['required', 'min:3', 'max:10', Rule::unique('users', 'name')],
+            // Aplicamos a regra do email ser único na tabela users.
+            'email' => ['required', 'email', Rule::unique('users', 'email')],
+            // name possui tamanho mínimo de 8 caracteres e máximo de 24
+            'password' => ['required', 'min:8', 'max:24']
+        ]);
+
+        // Utilizamos uma hash com o algoritmo bcrypt antes de enviarmos para o DB.
+        $incomingFields['password'] = bcrypt($incomingFields['password']);
+        // Armazena o resultado retornado pelo model User
+        $user = User::create($incomingFields);
+        // A função auth() é uma função a nível global que lida com a disponibilidade da instância de autorização
+        // O método login é responsável por "logar" o usuário na aplicação
+        auth()->login($user);
+
+        // Redireciona o usuário para a home page.
+        return redirect('/');
+    }
+
+    // Desloga o usuário da aplicação
+    public function logout() {
+        // O método logout() desloga o usuário da aplicação.
+        auth()->logout();
+        // Redireciona o usuário para a home page.
+        return redirect('/');
+    }
+
+    // Realiza uma requisição ao DB para ver se o usuário existe, caso exista o usuário é logado na aplicação.
+    public function login(Request $request) {
+        $incomingFields = $request->validate([
+            'login-name' => 'required',
+            'login-password' => 'required'
+        ]);
+
+        // Chamamos a função auth() juntamente com o método attempt() que analisa as credenciais do usuário no DB
+        if (auth()->attempt(['name' => $incomingFields['login-name'], 'password' => $incomingFields['login-password']])) {
+            // Usamos o método session para criar uma sessão associada com a requisição e o método regenerate
+            // para gerar uma sessão com o identificador atribuido.
+            $request->session()->regenerate();
+        }
+
+        // Independete do resultado dar true ou false, o usuário será redirecionado para a home page
+        return redirect('/');
+    }
+}
+```
+
+No exemplo acima foram adicionados os métodos de **logout** e **login**, note que no método de **logout** fazemos uso apenas da função global **auth()** segudo de um método **logout()** que é responsável por encerrar a **sessão** do usuário na aplicação. Em seguida, no método login temos que foi passado o parâmetro com a **classe Request** seguido da insância da classe **$request**, dessa forma quando o usuário clicar em login será enviado uma requsuição solicitando o acesso a aplicação, ou seja, a variável **$incomingFields** irá armazenar os dados validados pela função **validate()** com os campos de **username e password**, após isso fazemos uso de um if seguido da função **auth** e do método **attempt** com o parâmetro sendo um array associativo que contém o username e o password, dentro da estrutura if, utilizamos a requisição através da instância **$request** seguido dos métodos **session()** e **regenerate().** Ou seja, caso o usuário exista no DB ele será logado ao se criar uma nova sessão, e após isso será redirecionado para a home page. Mas caso não exista no DB, ele será redirecionado para a home page onde deverá registrar-se ou logar-se.
+
+Os routes foram configurados da seguinte forma:
+
+```php
+<?php
+
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Route;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "web" middleware group. Make something great!
+|
+*/
+
+Route::get('/', function () {
+    return view('home');
+});
+
+// Primeiro parâmetro = o URL e segundo é uma função que é executada
+// sempre que o URL é acessado.
+Route::post('/register', [UserController::class, 'register']);
+Route::post('/login', [UserController::class, 'login']);
+Route::post('/logout', [UserController::class, 'logout']);
+```
+
 [Voltar](README.md)
