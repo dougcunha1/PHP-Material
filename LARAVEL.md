@@ -20,6 +20,7 @@ composer require cocur/slugify
 No exemplo acima, todos os arquivos que preciamos estar no diretório vendor.
 
 Abaixo fazemos a "importação" do arquivo autoload.php no nosso arquivo index.php. Já a linha **use Cocur\Slugify\Slugify;** funciona como o import ou require do NodeJS. 
+
 ```php
 <?php
 
@@ -67,7 +68,7 @@ INFO  Server running on [http://127.0.0.1:8000].
 
 ## Introdução aos diretório do projeto e a blade template engine
 
-No diretório **resources/views/welcome.blade.php** é armazenado a página inicial quando rodamos o artisan serve, nesse caso o laravel faz uso do template engine Blade. 
+No diretório **resources/views/welcome.blade.php** é armazenado a página inicial quando rodamos o artisan serve, nesse caso o laravel faz uso do template engine Blade.
 
 Já o diretório **routes/web.php** é onde fica os nossos routes, ou seja, o lugar onde armazena o roteamento das páginas quando tentamos acessar determinado URL.
 
@@ -546,5 +547,7 @@ Route::post('/register', [UserController::class, 'register']);
 Route::post('/login', [UserController::class, 'login']);
 Route::post('/logout', [UserController::class, 'logout']);
 ```
+
+#### TODO:: Estudar a arquitetura de software MVC
 
 [Voltar](README.md)
